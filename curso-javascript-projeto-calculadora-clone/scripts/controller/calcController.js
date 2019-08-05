@@ -2,7 +2,19 @@ class CalcController {
 
     constructor() {
         this._displayCalc = "0";
-        this._dataAtual;
+        this._currentDate;
+        this.initialize();
+    }
+
+    initialize() {
+        //o El é convenção, quer dizer que se refere ao elemento do HTML
+        let displayCalcEl = document.querySelector('#display');
+        let dateEl = document.querySelector('#data');
+        let timeEl = document.querySelector('#hora');
+
+        displayCalcEl.innerHTML = "4567";
+        dateEl.innerHTML = "04/08/2019";
+        timeEl.innerHTML = "21:03";
     }
 
     get displayCalc() {
@@ -13,11 +25,11 @@ class CalcController {
         this._displayCalc = displayCalc;
     }
     
-    get dataAtual() {
-        return this._dataAtual;
+    get currentDate() {
+        return this._currentDate;
     }
 
-    set dataAtual (dataAtual){
-        this._dataAtual = dataAtual;
+    set currentDate (currentDate){
+        this._currentDate = currentDate;
     }
 }
