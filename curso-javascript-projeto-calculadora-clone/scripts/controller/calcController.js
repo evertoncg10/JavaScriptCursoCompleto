@@ -28,6 +28,11 @@ class CalcController {
         this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
     }
 
+    initButtonsEvents(){
+        //o sinal de > significa trazer todos os g dentro do id
+        let buttons = document.querySelectorAll("#buttons > g, #parts > g");
+    }
+
     get displayTime() {
         return this._timeEl.innerHTML;
     }
