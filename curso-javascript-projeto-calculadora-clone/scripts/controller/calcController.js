@@ -19,6 +19,8 @@ class CalcController {
         setInterval(() => {
             this.setDisplayDateTime();
         }, 1000);
+
+        this.setLastNumberToDisplay();
     }
 
     setDisplayDateTime() {
@@ -79,7 +81,8 @@ class CalcController {
                 break;
 
             case 'igual':
-
+                this.calc();
+                console.log("igual");
                 break;
 
             case 'ponto':
@@ -114,10 +117,12 @@ class CalcController {
 
     clearAll() {
         this._operation = [];
+        this.setLastNumberToDisplay();
     }
 
     clearEntry() {
         this._operation.pop();
+        this.setLastNumberToDisplay();
     }
 
     addOperation(value) {
@@ -163,6 +168,11 @@ class CalcController {
                 break;
             }
         }
+
+        if (!lastNumber) {
+            lastNumber = 0;
+        }
+
         this.displayCalc = lastNumber;
     }
 
@@ -189,9 +199,26 @@ class CalcController {
     }
 
     calc() {
-        let last = this._operation.pop();
+        let last = '';
+        if(this._operation.length > 3){
+            last = this._operation.pop();
+        }
+
         let result = eval(this._operation.join(""));
-        this._operation = [result, last];
+
+        if (last == '%') {
+
+            result /= 100;
+            this._operation = [result];
+
+        } else {
+
+            this._operation = [result];
+
+            if(last) {
+                this._operation.push(last);
+            }
+        }
 
         this.setLastNumberToDisplay();
     }
