@@ -1,1 +1,1 @@
-alert("Hello Word");
+var inputNome = document.querySelector("#exampleInputName");
