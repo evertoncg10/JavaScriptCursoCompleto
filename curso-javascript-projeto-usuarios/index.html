@@ -168,9 +168,9 @@
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>44</h3>
+                  <h3 id="number-users">0</h3>
           
-                  <p>Novos Usuários</p>
+                  <p>Usuários</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
@@ -182,7 +182,7 @@
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>15</h3>
+                  <h3 id="number-users-admin">0</h3>
           
                   <p>Administradores</p>
                 </div>
@@ -205,8 +205,7 @@
                 <div class="form-group">
                   <label for="exampleInputName">Nome</label>
                   <input type="text" class="form-control" id="exampleInputName" 
-                    placeholder="Digite o nome do usuário" name="name" 
-                    oninvalid="this.setCustomValidity('Por favor preencher o campo nome.')" >
+                    placeholder="Digite o nome do usuário" name="name">
                 </div>
                 <div class="form-group">
                   <label>Gênero</label>
@@ -475,14 +474,12 @@
                 <div class="form-group">
                   <label for="exampleInputEmail">E-mail</label>
                   <input type="email" class="form-control" id="exampleInputEmail" 
-                    placeholder="Digite o e-mail" name="email" 
-                    oninvalid="this.setCustomValidity('Por favor preencher o campo e-mail.')">
+                    placeholder="Digite o e-mail" name="email">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword">Senha</label>
                   <input type="password" class="form-control" id="exampleInputPassword" 
-                    placeholder="Crie uma senha" name="password" 
-                    oninvalid="this.setCustomValidity('Por favor preencher o campo senha.')">
+                    placeholder="Crie uma senha" name="password">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Foto</label>
