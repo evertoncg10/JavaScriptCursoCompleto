@@ -1,6 +1,7 @@
 class UserController {
-    constructor(formId, tbodyTableId) {
-        this.formEl = document.getElementById(formId);
+    constructor(formIdCreate, formIdUpdate, tbodyTableId) {
+        this.formEl = document.getElementById(formIdCreate);
+        this.formUpdateEl = document.getElementById(formIdUpdate);
         this.tbodyTableEl = document.getElementById(tbodyTableId);
         this.onSubmit();
         this.onEdit();
@@ -9,6 +10,36 @@ class UserController {
     onEdit(){
         document.querySelector("#box-user-update .btn-cancel").addEventListener("click", event => {
             this.showPanelCreate();
+        });
+
+        this.formUpdateEl.addEventListener("submit", event => {
+            event.preventDefault();
+
+            let btnSubmit = this.formUpdateEl.querySelector("[type=submit]");
+            btnSubmit.disabled = true;
+
+            let values = this.getValues(this.formUpdateEl);
+            console.log(values);
+
+            let tr = this.tbodyTableEl.rows[this.formUpdateEl.dataset.trIndex];
+
+            tr.dataset.user = JSON.stringify(values);
+
+            tr.innerHTML = `
+                <td><img src="${values.photo}" alt="User Image" class="img-circle img-sm"></td>
+                <td>${values.name}</td>
+                <td>${values.email}</td>
+                <td>${(values.admin) ? "Sim" : "Não"}</td>
+                <td>${Utils.dateFormat(values.register)}</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-edit btn-xs btn-flat">Editar</button>
+                    <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+                </td>
+            `;
+
+            this.addEventsTr(tr);
+            this.updateCount();
+
         });
     }
 
@@ -20,7 +51,7 @@ class UserController {
             let btnSubmit = this.formEl.querySelector("[type=submit]");
             btnSubmit.disabled = true;
 
-            let values = this.getValues();
+            let values = this.getValues(this.formEl);
 
             if (!values) {
                 btnSubmit.disabled = false;
@@ -70,10 +101,10 @@ class UserController {
         });
     }
 
-    getValues() {
+    getValues(formEl) {
         let user = {};
         let isValid = true;
-        [...this.formEl.elements].forEach(function(field, index) {
+        [...formEl.elements].forEach(function(field, index) {
 
             //Efetua a validação de campos obrigatórios com JS
             if(['name', 'email', 'password'].indexOf(field.name) > -1 && !field.value) {
@@ -130,17 +161,24 @@ class UserController {
             </td>
         `;
 
+        this.addEventsTr(tr);
+
+        this.tbodyTableEl.appendChild(tr);
+
+        this.updateCount();
+    }
+
+    addEventsTr(tr) {
         tr.querySelector(".btn-edit").addEventListener("click", event => {
             let json = JSON.parse(tr.dataset.user);
             let form = document.getElementById("form-user-update");
-
+            form.dataset.trIndex = tr.sectionRowIndex;
             for (const name in json) {
                 let field = form.querySelector("[name = " + name.replace("_", "") + "]");
-                
-                if(field) {
-                    if(field.type == "file") continue;
-
-                    switch(field.type) {
+                if (field) {
+                    if (field.type == "file")
+                        continue;
+                    switch (field.type) {
                         case 'file':
                             continue;
                             break;
@@ -151,21 +189,14 @@ class UserController {
                         case 'checkbox':
                             field.checked = json[name];
                             break;
-                        
                         default:
                             field.value = json[name];
                     }
-                    
                     field.value = json[name];
                 }
             }
-
             this.showPanelUpdate();
         });
-
-        this.tbodyTableEl.appendChild(tr);
-
-        this.updateCount();
     }
 
     showPanelCreate(){
