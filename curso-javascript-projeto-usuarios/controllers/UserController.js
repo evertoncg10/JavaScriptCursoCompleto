@@ -5,6 +5,8 @@ class UserController {
         this.tbodyTableEl = document.getElementById(tbodyTableId);
         this.onSubmit();
         this.onEdit();
+        this.listAllUsers();
+        
     }
 
     onEdit(){
@@ -83,6 +85,7 @@ class UserController {
             this.getPhoto(this.formEl).then(
                 content => {
                     values.photo = content;
+                    this.insertSessionStorage(values);
                     this.addLine(values);
                     this.formEl.reset();
                     btnSubmit.disabled = false;
@@ -188,6 +191,33 @@ class UserController {
         this.tbodyTableEl.appendChild(tr);
 
         this.updateCount();
+    }
+
+    getUsersStorage(){
+        let users = [];
+
+        if(sessionStorage.getItem("users")) {
+            users = JSON.parse(sessionStorage.getItem("users"));
+        }
+        return users;
+    }
+
+    listAllUsers(){
+        let users = this.getUsersStorage();
+
+        users.forEach(dataUser => {
+            let user = new User();
+            user.loadFromJson(dataUser);
+            this.addLine(user);
+        });
+    }
+
+    insertSessionStorage(dataUser) {
+        let users = this.getUsersStorage();
+
+        users.push(dataUser);
+
+        sessionStorage.setItem("users", JSON.stringify(users));
     }
 
     addEventsTr(tr) {
